@@ -40,6 +40,11 @@
           return []
         }
       },
+      async fetchFilters(filter) {
+        axios.get(this.directus.api + '/' + this.directus.project + '/items/' + filter + '?fields=*&sort=name').then(result => {
+          this.choices = result.data.data
+        })
+      },
       fetchAbout() {
         axios.get(this.directus.api + '/' + this.directus.project + this.directus.about).then(result => {
           let data = result.data.data[0]

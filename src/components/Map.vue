@@ -1,14 +1,29 @@
 <template>
-  <div>
+  <section class="section">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <p class="subtitle is-5">
+            <strong>{{ konmariMarkers.length }} / {{ markers.length }}</strong> elements
+          </p>
+        </div>
+        <div class="level-item">
+          <Picker name="Games" @pick="setFilter" />
+          <Picker name="Morphologies" @pick="setFilter" />
+        </div>
+      </div>
+    </div>
     <div id="map"></div>
-  </div>
+  </section>
 </template>
 
 <script>
   //import _ from 'lodash'
   import L from 'leaflet'
   import 'leaflet.markercluster'
+  import _ from 'lodash'
   import directus from '../mixins/Directus.vue'
+  import Picker from './Picker.vue'
 
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions({
@@ -18,22 +33,51 @@
   });
 
   export default {
+    components: { Picker },
     mixins: [directus],
     data() {
       return {
         map: null,
         cluster: null,
         items: [],
-        markers: []
+        markers: [],
+        game: '',
+        morphology: ''
+      }
+    },
+    computed: {
+      konmariMarkers() {
+        let konmari = this.markers
+
+        if (this.game != '') {
+          let game = this.game.id
+          konmari = _.filter(konmari, function(i) {
+            return i.game != null && i.game.id === game
+          })
+        }
+
+        if (this.morphology != '') {
+          let morphology = this.morphology.id
+          konmari = _.filter(konmari, function(i) {
+            return i.morphology != null && i.morphology.id === morphology
+          })
+        }
+
+        return konmari
+      }
+    },
+    watch: {
+      konmariMarkers() {
+        this.updateMarkers()
       }
     },
     methods: {
       resizeMapContainer: function() {
         const navbarHeight = document.getElementsByClassName('navbar')[0].offsetHeight
-        const footerHeight = 100
-        const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        const footerHeight = document.getElementsByClassName('footer')[0].offsetHeight
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
         const mapContainer = document.getElementById('map')
-        mapContainer.style.height = height - navbarHeight - footerHeight + 'px'
+        mapContainer.style.height = windowHeight - navbarHeight - footerHeight + 'px'
       },
       createMap: function(viewLng, viewLat, zoom) {
         this.map = L.map('map', {
@@ -49,32 +93,63 @@
         }).addTo(this.map)
         this.cluster = L.markerClusterGroup()
       },
-      createMarker: function(lng, lat, content) {
-        let marker = L.marker([lng, lat])
+      createMarker: function(lng, lat, content, game, morphology) {
+        let lMarker = L.marker([lng, lat])
         let popup = L.popup().setContent(content)
-        marker.bindPopup(popup)
-        this.markers.push(marker)
+        lMarker.bindPopup(popup)
+        let m = {
+          id: 1,
+          game: game,
+          morphology: morphology,
+          lMarker: lMarker
+        }
+        this.markers.push(m)
       },
-      buildTooltip: function(title, morphology, game) {
+      buildTooltip: function(title, game, morphology) {
         let str = '<div class="title is-4">' + title + '</div>'
         if (game != null && game != '') {
-          str += '<div class="subtitle is-5" style="margin-bottom: 1rem">' + game + '</div>'
+          str += '<div class="subtitle is-5" style="margin-bottom: 1rem">' + game.name + '</div>'
         }
         if (morphology != null && morphology != '') {
-          str += '<div class="subtitle is-6"><i class="fad fa-shapes"></i> ' + morphology + '</div>'
+          str += '<div class="subtitle is-6"><i class="fad fa-shapes"></i> ' + morphology.name + '</div>'
         }
         return str
+      },
+      updateMarkers: function() {
+        let lMarkers = []
+        for (const marker of this.konmariMarkers) {
+          lMarkers.push(marker.lMarker)
+        }
+        this.cluster.clearLayers()
+        this.cluster.addLayers(lMarkers)
+        let clusterBounds = this.cluster.getBounds()
+        if (!_.isEmpty(clusterBounds)) {
+          if (clusterBounds._northEast.lat != clusterBounds._southWest.lat) {
+            this.map.fitBounds(clusterBounds)
+          } else {
+            this.map.setView([clusterBounds._northEast.lat, clusterBounds._northEast.lng], 4)
+          }
+        } else {
+          this.map.setView([51.505, -0.09], 4)
+        }
+      },
+      setFilter(name, value) {
+        if (name === 'Games') {
+          this.game = value
+        } else if (name === 'Morphologies') {
+          this.morphology = value
+        }
       }
     },
     async created() {
       this.items = await this.fetchItems()
       for (const item of this.items) {
         if (item.lng != "NULL" && item.lat != "NULL" && item.lng != 0 && item.lat != 0) {
-          this.createMarker(item.lng, item.lat, this.buildTooltip(item.title, item.morphology.name, item.game.name))
+          this.createMarker(item.lng, item.lat, this.buildTooltip(item.title, item.game, item.morphology), item.game, item.morphology)
         }
       }
-      this.cluster.addLayers(this.markers).addTo(this.map)
-      this.map.fitBounds(this.cluster.getBounds())
+      this.cluster.addTo(this.map)
+      this.updateMarkers()
     },
     mounted() {
       this.resizeMapContainer()
