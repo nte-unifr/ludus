@@ -23,11 +23,6 @@
 
         <div class="navbar-end">
           <router-link to="/about" class="navbar-item">About</router-link>
-          <a class="navbar-item" href="#">
-            <span href="#" class="icon is-medium">
-              <i class="fad fa-angle-up fa-2x"></i>
-            </span>
-          </a>
         </div>
       </div>
     </nav>
