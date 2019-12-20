@@ -11,7 +11,7 @@
           project: 'ludus',
           about: '/items/about?fields=content,media.*',
           map: {
-            fields: 'id,title,morphology,game',
+            fields: 'id,title,morphology.*,game.*,lat,lng',
             sort: 'id',
             limit: '-1',
             status: 'published'
