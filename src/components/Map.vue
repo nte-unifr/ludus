@@ -79,10 +79,10 @@
         const mapContainer = document.getElementById('map')
         mapContainer.style.height = windowHeight - navbarHeight - footerHeight + 'px'
       },
-      createMap: function(viewLng, viewLat, zoom) {
+      createMap: function(viewLat, viewLng, zoom) {
         this.map = L.map('map', {
           minZoom: 3
-        }).setView([viewLng, viewLat], zoom)
+        }).setView([viewLat, viewLng], zoom)
       },
       setupLayers: function() {
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -93,8 +93,8 @@
         }).addTo(this.map)
         this.cluster = L.markerClusterGroup()
       },
-      createMarker: function(lng, lat, content, game, morphology) {
-        let lMarker = L.marker([lng, lat])
+      createMarker: function(lat, lng, content, game, morphology) {
+        let lMarker = L.marker([lat, lng])
         let popup = L.popup().setContent(content)
         lMarker.bindPopup(popup)
         let m = {
@@ -145,7 +145,7 @@
       this.items = await this.fetchItems()
       for (const item of this.items) {
         if (item.lng != "NULL" && item.lat != "NULL" && item.lng != 0 && item.lat != 0) {
-          this.createMarker(item.lng, item.lat, this.buildTooltip(item.title, item.game, item.morphology), item.game, item.morphology)
+          this.createMarker(item.lat, item.lng, this.buildTooltip(item.id, item.title, item.game, item.morphology), item.game, item.morphology)
         }
       }
       this.cluster.addTo(this.map)
