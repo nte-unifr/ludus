@@ -105,14 +105,17 @@
         }
         this.markers.push(m)
       },
-      buildTooltip: function(title, game, morphology) {
-        let str = '<div class="title is-4">' + title + '</div>'
+      buildTooltip: function(id, title, game, morphology) {
+        let str = '<div class="title is-4" style="margin-bottom:0.6rem">' + title + '</div>'
+        str += '<ul style="font-size:16px">'
         if (game != null && game != '') {
-          str += '<div class="subtitle is-5" style="margin-bottom: 1rem">' + game.name + '</div>'
+          str += '<li><i class="fad fa-game-board"></i> ' + game.name + '</li>'
         }
         if (morphology != null && morphology != '') {
-          str += '<div class="subtitle is-6"><i class="fad fa-shapes"></i> ' + morphology.name + '</div>'
+          str += '<li><i class="fad fa-shapes"></i> ' + morphology.name + '</li>'
         }
+        str += '<li><i class="fad fa-hashtag"></i> ' + id + '</li>'
+        str += '</ul>'
         return str
       },
       updateMarkers: function() {
