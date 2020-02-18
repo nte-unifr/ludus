@@ -6,7 +6,7 @@
     data() {
       return {
         directus: {
-          api: 'https://eddb.unifr.ch/api',
+          api: 'https://eddb.unifr.ch',
           path: '/items/Entries',
           project: 'ludus',
           about: '/items/about?fields=content,media.*',
@@ -17,7 +17,7 @@
             status: 'published'
           },
           eddb: {
-            project: '_',
+            project: 'nte',
             about: '/items/about',
             projects: '/items/projects?sort=title'
           }
