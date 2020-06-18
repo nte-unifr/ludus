@@ -75,15 +75,13 @@ export default {
     resizeMapContainer: function() {
       const navbarHeight = document.getElementsByClassName("navbar")[0]
         .offsetHeight;
-      const footerHeight = document.getElementsByClassName("footer")[0]
-        .offsetHeight;
       const windowHeight =
         window.innerHeight ||
         document.documentElement.clientHeight ||
         document.body.clientHeight;
       const mapContainer = document.getElementById("map");
       mapContainer.style.height =
-        windowHeight - navbarHeight - footerHeight + "px";
+        windowHeight - navbarHeight + "px";
     },
     createMap: function(viewLat, viewLng, zoom) {
       this.map = L.map("map", {
