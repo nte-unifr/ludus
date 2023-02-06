@@ -5,21 +5,24 @@
         <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
           <span>{{ title }}</span>
           <span class="icon is-small">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 9l6 6l6 -6"></path>
+            </svg>
           </span>
         </button>
       </div>
       <div class="dropdown-menu" id="dropdown-menu" role="menu">
         <div class="dropdown-content">
           <a v-for="choice in choices" :key="choice.id" href="#" class="dropdown-item" @click="pick(choice)">
-            {{ choice.name }}
+            {{ choice.title }}
           </a>
         </div>
       </div>
     </div>
     <br>
     <span class="tag is-primary is-medium" v-if="choice">
-      {{ choice.name }}
+      {{ choice.title }}
       <button @click="pick('')" class="delete is-small"></button>
     </span>
   </div>

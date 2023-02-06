@@ -6,8 +6,8 @@
     data() {
       return {
         directus: {
-          api: 'https://eddb.unifr.ch',
-          path: '/items/Entries',
+          api: 'https://eddb9.unifr.ch',
+          path: '/items/entries',
           project: 'ludus',
           about: '/items/about?fields=content,media.*',
           map: {
@@ -41,7 +41,7 @@
         }
       },
       async fetchFilters(filter) {
-        axios.get(this.directus.api + '/' + this.directus.project + '/items/' + filter + '?fields=*&sort=name').then(result => {
+        axios.get(this.directus.api + '/' + this.directus.project + '/items/' + filter + '?fields=*&sort=title').then(result => {
           this.choices = result.data.data
         })
       },

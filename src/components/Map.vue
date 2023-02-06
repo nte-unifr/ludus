@@ -8,8 +8,8 @@
           </p>
         </div>
         <div class="level-item">
-          <Picker name="Games" @pick="setFilter" />
-          <Picker name="Morphologies" @pick="setFilter" />
+          <Picker name="games" @pick="setFilter" />
+          <Picker name="morphologies" @pick="setFilter" />
         </div>
       </div>
     </div>
@@ -120,12 +120,12 @@ export default {
         "</div>";
       str += '<ul style="font-size:16px">';
       if (game != null && game != "") {
-        str += '<li><i class="fad fa-game-board"></i> ' + game.name + "</li>";
+        str += '<li>' + game.title + "</li>";
       }
       if (morphology != null && morphology != "") {
-        str += '<li><i class="fad fa-shapes"></i> ' + morphology.name + "</li>";
+        str += '<li>' + morphology.title + "</li>";
       }
-      str += '<li><i class="fad fa-hashtag"></i> ' + id + "</li>";
+      str += '<li>' + id + "</li>";
       str += "</ul>";
       return str;
     },
@@ -151,9 +151,9 @@ export default {
       }
     },
     setFilter(name, value) {
-      if (name === "Games") {
+      if (name === "games") {
         this.game = value;
-      } else if (name === "Morphologies") {
+      } else if (name === "morphologies") {
         this.morphology = value;
       }
     }

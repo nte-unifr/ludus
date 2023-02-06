@@ -6,7 +6,7 @@
           <img src="../assets/logo-unifr.png" width="28" height="28">
         </a>
         <a class="navbar-item" href="#">
-          <h1><strong>{{ project }}</strong></h1>
+          <h1><strong>Ludus</strong></h1>
         </a>
 
         <router-link to="/about" class="navbar-burger burger">
@@ -28,9 +28,3 @@
     </nav>
   </div>
 </template>
-
-<script>
-  export default {
-    props: ['project'],
-  }
-</script>

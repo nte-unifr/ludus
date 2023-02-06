@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar :project="project" />
+    <Navbar />
     <Map />
     <router-view></router-view>
   </div>
@@ -12,11 +12,6 @@ import Map from './components/Map.vue'
 
 export default {
   name: 'app',
-  components: { Navbar, Map },
-  data() {
-    return {
-      project: process.env.VUE_APP_TITLE
-    }
-  }
+  components: { Navbar, Map }
 }
 </script>

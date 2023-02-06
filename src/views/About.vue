@@ -9,7 +9,9 @@
           </figure>
         </div>
         <div class="card-content">
-          <div v-html="about" class="content"></div>
+          <div class="content">
+            The Ludus database is an important collaborative tool promoting the renewal of research on ancient play culture as a mirror and operator of past societies. The aim is to bring together all the ancient game boards, from ancient Egypt to the end of the Western Roman Empire (c.500 AD) preserved in various media: engraved on stone floors, in wood, in stone, in terracotta. The database generates a GIS topographic map that can be queried according to the type of game, the period, the location, the material, thus offering a new vision of the distrubution and the dissemination of games in the ancient world.
+          </div>
           <hr>
           <div class="content">
             <div class="columns">
