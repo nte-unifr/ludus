@@ -6,9 +6,9 @@
     data() {
       return {
         directus: {
-          api: 'https://eddb9.unifr.ch',
+          api: 'https://eddb.unifr.ch',
           path: '/items/entries',
-          project: 'ludus',
+          project: 'ludus-admin',
           about: '/items/about?fields=content,media.*',
           map: {
             fields: 'id,title,morphology.*,game.*,lat,lng',
